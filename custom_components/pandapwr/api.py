@@ -5,6 +5,8 @@ import async_timeout
 
 
 class PandaPWRApi:
+    """API client for PandaPWR devices."""
+
     def __init__(self, ip_address: str):
         """Initialize the API client."""
         self._base_url = f"http://{ip_address}"

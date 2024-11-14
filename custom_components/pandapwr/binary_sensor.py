@@ -16,6 +16,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class PandaPWRBinarySensor(BinarySensorEntity):
+    """Base class for a PandaPWR binary sensor."""
+
     def __init__(self, api, entry):
         """Initialize the binary sensor."""
         self._api = api
@@ -58,6 +60,8 @@ class PandaPWRBinarySensor(BinarySensorEntity):
 
 
 class PowerStateBinarySensor(PandaPWRBinarySensor):
+    """Binary sensor for monitoring the power state of a PandaPWR device."""
+
     def __init__(self, api, entry):
         super().__init__(api, entry)
         self._attr_name = "Power State"
@@ -66,18 +70,22 @@ class PowerStateBinarySensor(PandaPWRBinarySensor):
         self._attr_unique_id = f"{self._device_id}_power_state"
 
     def process_data(self, data):
+        """Process power state data from the API."""
         self._attr_is_on = data.get("power_state") == 1
 
 
 class UsbStateBinarySensor(PandaPWRBinarySensor):
+    """Binary sensor for monitoring the USB state of a PandaPWR device."""
+
     def __init__(self, api, entry):
         super().__init__(api, entry)
         self._attr_name = "USB State"
-        self._attr_device_class = "power"  # Cambiado a "power" para mostrar "on/off"
+        self._attr_device_class = "power"  # Set to "power" for on/off display
         self._attr_entity_category = EntityCategory.DIAGNOSTIC
         self._attr_unique_id = f"{self._device_id}_usb_state"
 
     def process_data(self, data):
+        """Process USB state data from the API."""
         self._attr_is_on = (
             data.get("usb_state") == 1
-        )  # Mostrar como "on" cuando es 1, "off" cuando es 0
+        )  # Display as "on" when 1, "off" when 0

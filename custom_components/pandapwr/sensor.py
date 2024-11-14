@@ -30,6 +30,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class PandaPWRSensor(SensorEntity):
+    """Base class for PandaPWR sensors."""
+
     def __init__(
         self,
         api,
@@ -72,30 +74,41 @@ class PandaPWRSensor(SensorEntity):
 
 
 class CountdownStateSensor(PandaPWRSensor):
+    """Sensor for monitoring countdown state on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(api, entry, device_id, "Countdown State", "countdown_state")
 
     def process_data(self, data):
+        """Process countdown state data from the API."""
         self._attr_native_value = data.get("countdown_state")
 
 
 class AutoPoweroffSensor(PandaPWRSensor):
+    """Sensor for monitoring auto power-off state on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(api, entry, device_id, "Auto Poweroff", "auto_poweroff")
 
     def process_data(self, data):
+        """Process auto power-off data from the API."""
         self._attr_native_value = data.get("auto_poweroff")
 
 
 class CountdownSensor(PandaPWRSensor):
+    """Sensor for monitoring countdown timer on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(api, entry, device_id, "Countdown", "countdown", "s")
 
     def process_data(self, data):
+        """Process countdown timer data from the API."""
         self._attr_native_value = data.get("countdown")
 
 
 class VoltageSensor(PandaPWRSensor):
+    """Sensor for monitoring voltage on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(
             api,
@@ -108,10 +121,13 @@ class VoltageSensor(PandaPWRSensor):
         )
 
     def process_data(self, data):
+        """Process voltage data from the API."""
         self._attr_native_value = data.get("voltage") or 0.0
 
 
 class CurrentSensor(PandaPWRSensor):
+    """Sensor for monitoring current on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(
             api,
@@ -124,20 +140,26 @@ class CurrentSensor(PandaPWRSensor):
         )
 
     def process_data(self, data):
+        """Process current data from the API."""
         self._attr_native_value = data.get("current") or 0.0
 
 
 class PowerSensor(PandaPWRSensor):
+    """Sensor for monitoring power on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(
             api, entry, device_id, "Power", "power", UnitOfPower.WATT, "power"
         )
 
     def process_data(self, data):
+        """Process power data from the API."""
         self._attr_native_value = data.get("power") or 0.0
 
 
 class EnergyUsageSensor(PandaPWRSensor):
+    """Sensor for monitoring energy usage on a PandaPWR device."""
+
     def __init__(self, api, entry, device_id):
         super().__init__(
             api,
@@ -150,4 +172,5 @@ class EnergyUsageSensor(PandaPWRSensor):
         )
 
     def process_data(self, data):
+        """Process energy usage data from the API."""
         self._attr_native_value = data.get("ele") or 0.0
