@@ -3,17 +3,17 @@
     "step": {
       "user": {
         "title": "Configurar Test Integration",
-        "description": "Introduce la dirección IP del dispositivo.",
+        "description": "Introduce la dirección IP del dispositivo",
         "data": {
           "ip_address": "Dirección IP del dispositivo"
         }
       }
     },
     "error": {
-      "cannot_connect": "No se pudo conectar al dispositivo."
+      "cannot_connect": "No se pudo conectar al dispositivo"
     },
     "abort": {
-      "single_instance_allowed": "Solo se permite una instancia."
+      "single_instance_allowed": "Solo se permite una instancia"
     }
   }
 }

@@ -1,13 +1,19 @@
 {
-    "config": {
-        "abort": {
-            "no_devices_found": "No devices found on the network",
-            "single_instance_allowed": "Already configured. Only a single configuration possible."
-        },
-        "step": {
-            "confirm": {
-                "description": "Do you want to start setup?"
-            }
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Test Integration",
+        "description": "Enter the device's IP address",
+        "data": {
+          "ip_address": "Device IP address"
         }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the device"
+    },
+    "abort": {
+      "single_instance_allowed": "Only one instance is allowed"
     }
+  }
 }
