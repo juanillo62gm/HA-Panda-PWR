@@ -1,3 +1,5 @@
+"""Sensor platform for PandaPWR integration in Home Assistant."""
+
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import (
     UnitOfElectricCurrent,

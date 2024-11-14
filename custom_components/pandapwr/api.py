@@ -1,3 +1,5 @@
+"""API client for interacting with PandaPWR devices."""
+
 import aiohttp
 import async_timeout
 

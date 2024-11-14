@@ -1,3 +1,5 @@
+"""Binary sensor platform for PandaPWR integration in Home Assistant."""
+
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
