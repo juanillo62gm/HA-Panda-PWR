@@ -1,17 +1,29 @@
 """Binary sensor platform for PandaPWR integration in Home Assistant."""
 
-from homeassistant.components.binary_sensor import BinarySensorEntity
+import aiohttp
+from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
+    BinarySensorEntity,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import (
+    AddEntitiesCallback,
+)
 
 from .const import DOMAIN
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
     """Set up the binary sensor platform from a config entry."""
     api = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        [PowerStateBinarySensor(api, entry), UsbStateBinarySensor(api, entry)], True
+        [PowerStateBinarySensor(api, entry), UsbStateBinarySensor(api, entry)],
+        update_before_add=True,
     )
 
 
@@ -32,7 +44,7 @@ class PandaPWRBinarySensor(BinarySensorEntity):
             data = await self._api.get_data()
             self._attr_available = True
             self.process_data(data)
-        except Exception:
+        except aiohttp.ClientError:
             self._attr_available = False
 
     async def async_added_to_hass(self):
@@ -65,7 +77,9 @@ class PowerStateBinarySensor(PandaPWRBinarySensor):
     def __init__(self, api, entry):
         super().__init__(api, entry)
         self._attr_name = "Power State"
-        self._attr_device_class = "power"
+        self._attr_device_class = (
+            BinarySensorDeviceClass.POWER
+        )  # Corrected device class
         self._attr_entity_category = EntityCategory.DIAGNOSTIC
         self._attr_unique_id = f"{self._device_id}_power_state"
 
@@ -80,7 +94,9 @@ class UsbStateBinarySensor(PandaPWRBinarySensor):
     def __init__(self, api, entry):
         super().__init__(api, entry)
         self._attr_name = "USB State"
-        self._attr_device_class = "power"  # Set to "power" for on/off display
+        self._attr_device_class = (
+            BinarySensorDeviceClass.POWER
+        )  # Corrected device class
         self._attr_entity_category = EntityCategory.DIAGNOSTIC
         self._attr_unique_id = f"{self._device_id}_usb_state"
 

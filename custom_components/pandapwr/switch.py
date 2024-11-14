@@ -1,7 +1,7 @@
 """Switch platform for PandaPWR integration in Home Assistant."""
 
 from homeassistant.components.switch import SwitchEntity
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.const import EntityCategory
 
 from .const import DOMAIN
 
