@@ -1,7 +1,7 @@
 {
   "name": "juanillo62gm/panda_pwr",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  "postCreateCommand": "scripts/setup",
+  "postCreateCommand": "scripts/setup.sh",
   "forwardPorts": [8123],
   "portsAttributes": {
     "8123": {
