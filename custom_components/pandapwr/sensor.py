@@ -1,11 +1,11 @@
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import (
-    UnitOfElectricPotential,
     UnitOfElectricCurrent,
-    UnitOfPower,
+    UnitOfElectricPotential,
     UnitOfEnergy,
+    UnitOfPower,
 )
-from homeassistant.helpers.entity import EntityCategory
+
 from .const import DOMAIN
 
 

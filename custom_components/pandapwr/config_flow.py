@@ -1,5 +1,6 @@
-from homeassistant import config_entries
 import voluptuous as vol
+from homeassistant import config_entries
+
 from .api import PandaPWRApi
 from .const import DOMAIN
 
@@ -14,8 +15,7 @@ class PandaPWRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             api = PandaPWRApi(ip_address)
             if await api.test_connection():
                 return self.async_create_entry(title="Panda PWR", data=user_input)
-            else:
-                errors["base"] = "cannot_connect"
+            errors["base"] = "cannot_connect"
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({vol.Required("ip_address"): str}),

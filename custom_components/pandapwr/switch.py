@@ -1,14 +1,16 @@
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.entity import EntityCategory
+
 from .const import DOMAIN
+
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up switch platform for PandaPWR."""
     api = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities([
-        PowerSwitch(api, entry, hass),
-        UsbSwitch(api, entry, hass)
-    ], True)
+    async_add_entities(
+        [PowerSwitch(api, entry, hass), UsbSwitch(api, entry, hass)], True
+    )
+
 
 class PandaPWRSwitch(SwitchEntity):
     def __init__(self, api, entry, hass):
@@ -39,6 +41,7 @@ class PandaPWRSwitch(SwitchEntity):
         """Process API data."""
         raise NotImplementedError
 
+
 class PowerSwitch(PandaPWRSwitch):
     def __init__(self, api, entry, hass):
         super().__init__(api, entry, hass)
@@ -58,6 +61,7 @@ class PowerSwitch(PandaPWRSwitch):
 
     def process_data(self, data):
         self._attr_is_on = data.get("power_state") == 1
+
 
 class UsbSwitch(PandaPWRSwitch):
     def __init__(self, api, entry, hass):

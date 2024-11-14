@@ -1,6 +1,7 @@
 from homeassistant.components.binary_sensor import BinarySensorEntity
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.helpers.entity import EntityCategory
+
 from .const import DOMAIN
 
 
