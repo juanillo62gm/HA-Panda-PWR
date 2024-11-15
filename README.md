@@ -12,8 +12,7 @@
 
 Integrate your [Panda PWR from BIGTREETECH (BTT) | BIQU][pandapwrwiki] with Home Assistant.
 
-[![PandaPWRDevice](https://bttwiki.com/img/PandaPWR/interface.jpg)][pandapwrwiki]
-
+[![PandaPWRDevice](/assets/panda_pwr_hardware.jpeg)][pandapwrwiki]
 
 **This integration will set up the following platforms.**
 
