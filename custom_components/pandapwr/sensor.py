@@ -1,15 +1,25 @@
+"""Sensor platform for PandaPWR integration in Home Assistant."""
+
+from typing import Any
+
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor.const import SensorDeviceClass
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
     UnitOfEnergy,
     UnitOfPower,
 )
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
     """Set up the sensor platform for PandaPWR."""
     api = hass.data[DOMAIN][entry.entry_id]
     device_id = f"pandapwr_{entry.data['ip_address']}"
@@ -23,38 +33,39 @@ async def async_setup_entry(hass, entry, async_add_entities):
             PowerSensor(api, entry, device_id),
             EnergyUsageSensor(api, entry, device_id),
         ],
-        True,
+        update_before_add=True,
     )
 
 
 class PandaPWRSensor(SensorEntity):
+    """Base class for PandaPWR sensors."""
+
     def __init__(
         self,
-        api,
-        entry,
-        device_id,
-        name,
-        unique_id_suffix,
-        native_unit_of_measurement=None,
-        device_class=None,
-    ):
+        api: Any,
+        entry: ConfigEntry,
+        device_id: str,
+        sensor_info: dict,
+    ) -> None:
         """Initialize the sensor with common attributes."""
         self._api = api
         self._entry = entry
-        self._attr_name = name
-        self._attr_unique_id = f"{device_id}_{unique_id_suffix}"
+        self._attr_name = sensor_info["name"]
+        self._attr_unique_id = f"{device_id}_{sensor_info['unique_id_suffix']}"
         self._attr_native_value = None
-        self._attr_native_unit_of_measurement = native_unit_of_measurement
-        self._attr_device_class = device_class
+        self._attr_native_unit_of_measurement = sensor_info.get(
+            "native_unit_of_measurement"
+        )
+        self._attr_device_class = sensor_info.get("device_class")
         self._device_id = device_id
 
-    async def async_update(self):
+    async def async_update(self) -> None:
         """Fetch latest state data from the device."""
         data = await self._api.get_data()
         self.process_data(data)
 
     @property
-    def device_info(self):
+    def device_info(self) -> dict:
         """Return device information to group in the UI."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
@@ -64,88 +75,127 @@ class PandaPWRSensor(SensorEntity):
             "sw_version": "1.0",
         }
 
-    def process_data(self, data):
+    def process_data(self, data: dict) -> None:
         """Process data received from the API."""
         raise NotImplementedError
 
 
 class CountdownStateSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(api, entry, device_id, "Countdown State", "countdown_state")
+    """Sensor for monitoring countdown state on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Countdown State",
+            "unique_id_suffix": "countdown_state",
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process countdown state data from the API."""
         self._attr_native_value = data.get("countdown_state")
 
 
 class AutoPoweroffSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(api, entry, device_id, "Auto Poweroff", "auto_poweroff")
+    """Sensor for monitoring auto power-off state on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Auto Poweroff",
+            "unique_id_suffix": "auto_poweroff",
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process auto power-off data from the API."""
         self._attr_native_value = data.get("auto_poweroff")
 
 
 class CountdownSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(api, entry, device_id, "Countdown", "countdown", "s")
+    """Sensor for monitoring countdown timer on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Countdown",
+            "unique_id_suffix": "countdown",
+            "native_unit_of_measurement": "s",
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process countdown timer data from the API."""
         self._attr_native_value = data.get("countdown")
 
 
 class VoltageSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(
-            api,
-            entry,
-            device_id,
-            "Voltage",
-            "voltage",
-            UnitOfElectricPotential.VOLT,
-            "voltage",
-        )
+    """Sensor for monitoring voltage on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Voltage",
+            "unique_id_suffix": "voltage",
+            "native_unit_of_measurement": UnitOfElectricPotential.VOLT,
+            "device_class": SensorDeviceClass.VOLTAGE,
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process voltage data from the API."""
         self._attr_native_value = data.get("voltage") or 0.0
 
 
 class CurrentSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(
-            api,
-            entry,
-            device_id,
-            "Current",
-            "current",
-            UnitOfElectricCurrent.AMPERE,
-            "current",
-        )
+    """Sensor for monitoring current on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Current",
+            "unique_id_suffix": "current",
+            "native_unit_of_measurement": UnitOfElectricCurrent.AMPERE,
+            "device_class": SensorDeviceClass.CURRENT,
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process current data from the API."""
         self._attr_native_value = data.get("current") or 0.0
 
 
 class PowerSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(
-            api, entry, device_id, "Power", "power", UnitOfPower.WATT, "power"
-        )
+    """Sensor for monitoring power on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Power",
+            "unique_id_suffix": "power",
+            "native_unit_of_measurement": UnitOfPower.WATT,
+            "device_class": SensorDeviceClass.POWER,
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process power data from the API."""
         self._attr_native_value = data.get("power") or 0.0
 
 
 class EnergyUsageSensor(PandaPWRSensor):
-    def __init__(self, api, entry, device_id):
-        super().__init__(
-            api,
-            entry,
-            device_id,
-            "Energy Usage",
-            "energy_usage",
-            UnitOfEnergy.KILO_WATT_HOUR,
-            "energy",
-        )
+    """Sensor for monitoring energy usage on a PandaPWR device."""
 
-    def process_data(self, data):
+    def __init__(self, api: Any, entry: ConfigEntry, device_id: str) -> None:
+        """Initialize the sensor."""
+        sensor_info = {
+            "name": "Energy Usage",
+            "unique_id_suffix": "energy_usage",
+            "native_unit_of_measurement": UnitOfEnergy.KILO_WATT_HOUR,
+            "device_class": SensorDeviceClass.ENERGY,
+        }
+        super().__init__(api, entry, device_id, sensor_info)
+
+    def process_data(self, data: dict) -> None:
+        """Process energy usage data from the API."""
         self._attr_native_value = data.get("ele") or 0.0

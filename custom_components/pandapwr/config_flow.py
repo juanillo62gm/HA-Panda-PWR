@@ -1,3 +1,5 @@
+"""Config flow for PandaPWR integration in Home Assistant."""
+
 import voluptuous as vol
 from homeassistant import config_entries
 
@@ -6,9 +8,14 @@ from .const import DOMAIN
 
 
 class PandaPWRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for PandaPWR."""
+
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self, user_input: dict | None = None
+    ) -> config_entries.ConfigFlowResult:
+        """Handle the initial step for setting up the integration."""
         errors = {}
         if user_input:
             ip_address = user_input["ip_address"]
