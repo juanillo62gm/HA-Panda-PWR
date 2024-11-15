@@ -12,7 +12,9 @@ class PandaPWRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self, user_input: dict | None = None
+    ) -> config_entries.ConfigFlowResult:
         """Handle the initial step for setting up the integration."""
         errors = {}
         if user_input:
