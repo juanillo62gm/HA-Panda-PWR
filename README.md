@@ -8,6 +8,10 @@
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 # Panda PWR
+
+> [!IMPORTANT]
+> This repository is currently not available in HACS. It is awaiting review by the HACS team to be included as a default repository. You can check the status of the review [here](https://github.com/hacs/default/pull/2851)
+
 ## Home Assistant Integration
 
 Integrate your [Panda PWR from BIGTREETECH (BTT) | BIQU][pandapwrwiki] with Home Assistant.
@@ -30,20 +34,54 @@ Integrate your [Panda PWR from BIGTREETECH (BTT) | BIQU][pandapwrwiki] with Home
 | `binary_sensor` | `PowerStateBinarySensor`| Indicates if the power is on or off.              |
 | `binary_sensor` | `UsbStateBinarySensor`  | Indicates if the USB port is on or off.           |
 
+## **Installation**
 
-## Installation
+### **Option 1: Installation via HACS**
 
-1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-1. If you do not have a `custom_components` directory (folder) there, you need to create it.
-1. In the `custom_components` directory (folder) create a new folder called `HA-Panda-PWR`.
-1. Download _all_ the files from the `custom_components/HA-Panda-PWR/` directory (folder) in this repository.
-1. Place the files you downloaded in the new directory (folder) you created.
-1. Restart Home Assistant
-1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Panda PWR"
+1. Open Home Assistant and navigate to **Settings** → **Devices & Services** → **HACS**.
+
+2. Click on the three dots in the top-right corner of the HACS page and select **Custom Repositories**.
+
+3. Add the repository URL to the **Custom Repository** field:
+    ```
+    https://github.com/juanillo62gm/HA-Panda-PWR/tree/main
+    ```
+
+4. Select **Integration** as the repository type and click **Add**.
+
+5. Once the repository is added, find the integration in HACS, click **Install**, and follow the installation prompts.
+
+6. Restart Home Assistant after completing the installation.
+
+7. In the Home Assistant UI, navigate to **Configuration** → **Integrations**, click the "+" button, and search for **Panda PWR**.
+
+---
+
+### **Option 2: Manual Installation**
+
+1. Open your Home Assistant configuration directory using your preferred file management tool.
+   This is the folder where the `configuration.yaml` file is located.
+
+2. Check if the `custom_components` folder exists in your configuration directory.
+   - If it doesn’t exist, create a new folder named `custom_components`.
+
+3. Inside the `custom_components` folder, create a new folder called `HA-Panda-PWR`.
+
+4. Download **all** the files from the `custom_components/HA-Panda-PWR/` folder in this repository.
+
+5. Place the downloaded files into the `HA-Panda-PWR` folder you just created.
+
+6. Restart Home Assistant to load the new integration.
+
+7. In the Home Assistant UI, navigate to **Configuration** → **Integrations**, click the "+" button, and search for **Panda PWR**.
+
+---
 
 ## Configuration is done in the UI
 
 <!---->
+
+## Assets available [here](https://github.com/home-assistant/brands/tree/master/custom_integrations/panda_pwr)
 
 ## Contributions are welcome!
 
