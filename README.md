@@ -65,11 +65,11 @@ Integrate your [Panda PWR from BIGTREETECH (BTT) | BIQU][pandapwrwiki] with Home
 2. Check if the `custom_components` folder exists in your configuration directory.
    - If it doesn’t exist, create a new folder named `custom_components`.
 
-3. Inside the `custom_components` folder, create a new folder called `HA-Panda-PWR`.
+3. Inside the `custom_components` folder, create a new folder called `panda_pwr`.
 
-4. Download **all** the files from the `custom_components/HA-Panda-PWR/` folder in this repository.
+4. Download **all** the files from the `custom_components/panda_pwr/` folder in this repository.
 
-5. Place the downloaded files into the `HA-Panda-PWR` folder you just created.
+5. Place the downloaded files into the `panda_pwr` folder you just created.
 
 6. Restart Home Assistant to load the new integration.
 
