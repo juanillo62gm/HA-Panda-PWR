@@ -4,6 +4,7 @@ from typing import Any
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor.const import SensorDeviceClass
+from homeassistant.components.sensor import SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     UnitOfElectricCurrent,
@@ -57,6 +58,7 @@ class PandaPWRSensor(SensorEntity):
             "native_unit_of_measurement"
         )
         self._attr_device_class = sensor_info.get("device_class")
+        self._attr_state_class = sensor_info.get("state_class")
         self._device_id = device_id
 
     async def async_update(self) -> None:
@@ -193,6 +195,7 @@ class EnergyUsageSensor(PandaPWRSensor):
             "unique_id_suffix": "energy_usage",
             "native_unit_of_measurement": UnitOfEnergy.KILO_WATT_HOUR,
             "device_class": SensorDeviceClass.ENERGY,
+            "state_class": SensorStateClass.TOTAL_INCREASING,
         }
         super().__init__(api, entry, device_id, sensor_info)
 
