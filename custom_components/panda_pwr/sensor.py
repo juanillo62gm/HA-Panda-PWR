@@ -2,8 +2,13 @@
 
 from typing import Any
 
-from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.components.sensor.const import SensorDeviceClass
+from homeassistant.components.sensor import (
+    SensorEntity,
+)
+from homeassistant.components.sensor.const import (
+    SensorDeviceClass,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     UnitOfElectricCurrent,
@@ -140,6 +145,7 @@ class VoltageSensor(PandaPWRSensor):
             "unique_id_suffix": "voltage",
             "native_unit_of_measurement": UnitOfElectricPotential.VOLT,
             "device_class": SensorDeviceClass.VOLTAGE,
+            "state_class": SensorStateClass.MEASUREMENT,
         }
         super().__init__(api, entry, device_id, sensor_info)
 
@@ -158,6 +164,7 @@ class CurrentSensor(PandaPWRSensor):
             "unique_id_suffix": "current",
             "native_unit_of_measurement": UnitOfElectricCurrent.AMPERE,
             "device_class": SensorDeviceClass.CURRENT,
+            "state_class": SensorStateClass.MEASUREMENT,
         }
         super().__init__(api, entry, device_id, sensor_info)
 
@@ -176,6 +183,7 @@ class PowerSensor(PandaPWRSensor):
             "unique_id_suffix": "power",
             "native_unit_of_measurement": UnitOfPower.WATT,
             "device_class": SensorDeviceClass.POWER,
+            "state_class": SensorStateClass.MEASUREMENT,
         }
         super().__init__(api, entry, device_id, sensor_info)
 
