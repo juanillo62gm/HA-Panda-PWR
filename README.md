@@ -52,7 +52,7 @@ Integrate your [Panda PWR from BIGTREETECH (BTT) | BIQU][pandapwrwiki] with Home
 
 3. Add the repository URL to the **Custom Repository** field:
     ```
-    https://github.com/juanillo62gm/HA-Panda-PWR/tree/main
+    https://github.com/juanillo62gm/HA-Panda-PWR
     ```
 
 4. Select **Integration** as the repository type and click **Add**.
